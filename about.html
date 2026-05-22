@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | IsItDownIndia.in</title>
+<meta name="description" content="Learn about IsItDownIndia — India's free tool to check if websites are down or blocked. Built for Indian internet users.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#1a73e8;--danger:#d93025;--bg:#f8f9fa;--card:#fff;--text:#202124;--muted:#5f6368;--border:#dadce0;--radius:12px}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{font-size:1.2rem;font-weight:700;color:var(--primary);text-decoration:none}
+.logo span{color:var(--danger)}
+nav a{color:var(--muted);text-decoration:none;font-size:.9rem;margin-left:20px}
+nav a:hover{color:var(--primary)}
+
+.page{max-width:720px;margin:0 auto;padding:48px 20px 60px}
+.page h1{font-size:1.9rem;font-weight:800;margin-bottom:8px}
+.page .subtitle{color:var(--muted);font-size:1rem;margin-bottom:36px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card p{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.card p:last-child{margin-bottom:0}
+
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.feature-list li{font-size:.9rem;color:var(--muted);line-height:1.6;padding-left:28px;position:relative}
+.feature-list li::before{content:attr(data-icon);position:absolute;left:0}
+
+.stats-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:4px}
+.stat-box{flex:1;min-width:140px;background:var(--bg);border-radius:10px;padding:16px;text-align:center}
+.stat-box .num{font-size:1.6rem;font-weight:800;color:var(--primary)}
+.stat-box .lbl{font-size:.78rem;color:var(--muted);margin-top:4px}
+
+.contact-link{display:inline-block;margin-top:10px;color:var(--primary);font-size:.9rem;text-decoration:none;font-weight:600}
+.contact-link:hover{text-decoration:underline}
+
+footer{background:#fff;border-top:1px solid var(--border);text-align:center;padding:20px;font-size:.78rem;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none;margin:0 10px}
+footer a:hover{color:var(--primary)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">IsItDown<span>India</span></a>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="privacy-policy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>About IsItDownIndia</h1>
+  <p class="subtitle">India's free tool to check if websites are down, blocked, or slow — built specifically for Indian internet users.</p>
+
+  <div class="card">
+    <h2>🇮🇳 Why We Built This</h2>
+    <p>Global downtime checkers like isitdownrightnow.com ping websites from servers in the US or Europe. That tells you if a site is down globally — but it doesn't tell you what's actually happening on your Jio, Airtel, or BSNL connection in India.</p>
+    <p>Indian users face a unique set of problems: ISP-level blocks, government-mandated restrictions, regional outages, and apps that crash even when the homepage looks fine. No existing tool was built to handle this.</p>
+    <p>So we built IsItDownIndia — a tool that checks from India, combines technical pings with real user reports, and gives you an honest answer about what's actually happening on Indian networks.</p>
+  </div>
+
+  <div class="card">
+    <h2>⚡ How It Works</h2>
+    <ul class="feature-list">
+      <li data-icon="🔍">
+        <strong>Direct Browser Ping:</strong> We send a real HTTP request to the target website from your browser — with a real browser identity — so security systems like Cloudflare don't mistake it for a bot.
+      </li>
+      <li data-icon="🙋">
+        <strong>Crowdsourced Reports:</strong> Indian users report app problems in real time. If an app's payment gateway or delivery API is failing — even while the homepage loads — our users flag it.
+      </li>
+      <li data-icon="🧠">
+        <strong>Hybrid Verdict:</strong> We combine both signals. If 30+ users report problems in 10 minutes, we override the technical ping and flag the site as having issues — just like Downdetector does.
+      </li>
+      <li data-icon="⚡">
+        <strong>Smart Caching:</strong> Results are cached for 60 seconds so popular sites don't get hammered during outage spikes (like when Instagram goes down and 50,000 users check at once).
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>📊 By the Numbers</h2>
+    <div class="stats-row">
+      <div class="stat-box"><div class="num">12+</div><div class="lbl">Popular Indian sites tracked</div></div>
+      <div class="stat-box"><div class="num">60s</div><div class="lbl">Result cache (prevents overload)</div></div>
+      <div class="stat-box"><div class="num">30</div><div class="lbl">Reports needed to trigger alert</div></div>
+      <div class="stat-box"><div class="num">0₹</div><div class="lbl">Cost to use — forever free</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🛡 Our Commitment</h2>
+    <p>IsItDownIndia is and will always be free to use. We do not require login, email, or any personal information to check a website status.</p>
+    <p>The site is supported by non-intrusive Google AdSense ads. We do not sell user data, track individuals, or share information with third parties beyond what is standard for ad-supported websites. See our <a href="privacy-policy.html" style="color:var(--primary)">Privacy Policy</a> for full details.</p>
+  </div>
+
+  <div class="card">
+    <h2>📬 Contact Us</h2>
+    <p>Have a suggestion, a bug to report, or a site you'd like us to add to the quick-check list? We'd love to hear from you.</p>
+    <a class="contact-link" href="mailto:hello@isitdownindia.in">✉ hello@isitdownindia.in</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 IsItDownIndia.in &nbsp;|&nbsp;
+    <a href="index.html">Home</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="mailto:hello@isitdownindia.in">Contact</a>
+  </p>
+</footer>
+
+</body>
+</html>
