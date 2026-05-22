@@ -308,10 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function buildSiteCards() {
   const grid = document.getElementById('sitesGrid');
   SITES.forEach(s => {
+    const dom = getDomain(s.url);
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${dom}&sz=64`;
     const card = document.createElement('div');
     card.className = 'site-card';
     card.innerHTML = `
-      <div class="site-icon" style="background:${s.bg};color:#fff">${s.icon}</div>
+      <img src="${faviconUrl}" width="28" height="28"
+           style="border-radius:6px;object-fit:contain;flex-shrink:0"
+           onerror="this.style.display='none'"
+           alt="${s.name}">
       <span class="site-name">${s.name}</span>
       <span class="site-status" id="dot_${domainKey(s.url)}"></span>`;
     card.onclick = () => handleCheck(s.url);
