@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is It Down India? | Check if a Website is Down or Blocked in India</title>
+<meta name="description" content="Check if any website is down or blocked in India right now. Free real-time tool for Indian users — YouTube, Instagram, IRCTC, Swiggy and more.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#1a73e8;--primary-dark:#1557b0;
+  --success:#0f9d58;--danger:#d93025;--warn:#f4b400;--purple:#7c3aed;
+  --bg:#f8f9fa;--card:#fff;--text:#202124;--muted:#5f6368;
+  --border:#dadce0;--radius:12px;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{font-size:1.2rem;font-weight:700;color:var(--primary);text-decoration:none;cursor:pointer}
+.logo span{color:var(--danger)}
+nav a{color:var(--muted);text-decoration:none;font-size:.9rem;margin-left:20px}
+
+.ad-wrap{max-width:980px;width:95%;margin:12px auto}
+.ad-banner{background:#fff;border:1px dashed var(--border);border-radius:8px;padding:8px;text-align:center}
+.ad-label{font-size:.65rem;color:#bbb;display:block;margin-bottom:3px}
+.ad-slot{background:#f1f3f4;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#ccc}
+
+/* HOME VIEW */
+#homeView{display:block}
+#resultView{display:none}
+
+header{text-align:center;padding:36px 24px 20px}
+header h1{font-size:2rem;font-weight:800;margin-bottom:8px}
+header h1 span{color:var(--primary)}
+header p{color:var(--muted);font-size:.95rem;max-width:540px;margin:0 auto 20px}
+
+.search-center{max-width:620px;margin:0 auto;padding:0 16px}
+.input-row{display:flex;gap:8px;margin-bottom:4px}
+#urlInput{flex:1;padding:14px 18px;border:2px solid var(--border);border-radius:var(--radius);font-size:1rem;outline:none;transition:.2s}
+#urlInput:focus{border-color:var(--primary)}
+#checkBtn{padding:14px 26px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:600;cursor:pointer;white-space:nowrap;min-width:130px;transition:.2s}
+#checkBtn:hover{background:var(--primary-dark)}
+#checkBtn:disabled{background:#9ab4d8;cursor:not-allowed}
+.hint{font-size:.76rem;color:var(--muted);text-align:center;margin-bottom:24px}
+
+/* QUICK TAGS */
+.quick-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
+.tag{padding:7px 14px;background:#fff;border:1.5px solid var(--border);border-radius:100px;font-size:.82rem;font-weight:500;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px}
+.tag:hover{border-color:var(--primary);color:var(--primary);background:#f0f6ff}
+.tag img{width:16px;height:16px;border-radius:3px}
+
+/* LIVE STATUS TICKER */
+.ticker-wrap{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:10px 0;overflow:hidden;margin-bottom:0}
+.ticker-inner{display:flex;gap:0;animation:ticker 30s linear infinite;width:max-content}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{padding:0 28px;display:flex;align-items:center;gap:7px;font-size:.82rem;white-space:nowrap;border-right:1px solid var(--border)}
+.t-dot{width:8px;height:8px;border-radius:50%}
+.t-dot.up{background:var(--success)}
+.t-dot.down{background:var(--danger)}
+.t-dot.unknown{background:#ccc}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* SITES GRID HOME */
+.section{max-width:980px;margin:20px auto;padding:0 16px}
+.section h2{font-size:1.05rem;font-weight:700;margin-bottom:12px}
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:9px}
+.site-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 13px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:9px}
+.site-card:hover{border-color:var(--primary);box-shadow:0 2px 10px rgba(26,115,232,.13);transform:translateY(-1px)}
+.site-icon-img{width:26px;height:26px;border-radius:6px;object-fit:contain;flex-shrink:0}
+.site-info{flex:1;min-width:0}
+.site-name{font-size:.82rem;font-weight:600;display:block}
+.site-last{font-size:.65rem;color:var(--muted);display:block;margin-top:1px}
+.site-dot{width:8px;height:8px;border-radius:50%;background:#ddd;flex-shrink:0}
+.site-dot.up{background:var(--success)}
+.site-dot.down{background:var(--danger)}
+
+/* ── RESULT VIEW ── */
+.result-layout{max-width:980px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr 280px;gap:20px}
+@media(max-width:720px){.result-layout{grid-template-columns:1fr}}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:.85rem;font-weight:600;cursor:pointer;margin-bottom:12px;padding:6px 12px;background:#fff;border:1.5px solid var(--border);border-radius:100px;transition:.15s}
+.back-btn:hover{border-color:var(--primary);background:#f0f6ff}
+
+/* RESULT CARD */
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.status-badge{padding:8px 16px;border-radius:100px;font-weight:700;font-size:.95rem;white-space:nowrap}
+.status-up{background:#e6f4ea;color:var(--success)}
+.status-down{background:#fce8e6;color:var(--danger)}
+.status-slow{background:#fef7e0;color:var(--warn)}
+.status-reported{background:#ede9fe;color:var(--purple)}
+.result-url{font-size:.8rem;color:var(--muted);word-break:break-all;margin-top:4px}
+.ping-badge{font-size:.7rem;color:var(--muted);background:#f8f9fa;padding:5px 9px;border-radius:7px;line-height:1.7;text-align:right}
+.result-stats{display:flex;gap:16px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:12px}
+.stat .stat-label{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px}
+.stat .stat-value{font-size:.98rem;font-weight:700}
+.result-note{font-size:.83rem;color:var(--muted);background:#f8f9fa;padding:10px 13px;border-radius:8px;line-height:1.5;margin-bottom:14px}
+
+/* 24H OUTAGE CHART */
+.chart-section{margin-bottom:14px}
+.chart-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;color:var(--text)}
+.chart-bars{display:flex;align-items:flex-end;gap:2px;height:60px;background:#f8f9fa;border-radius:8px;padding:6px 8px;position:relative}
+.c-bar{flex:1;border-radius:2px 2px 0 0;min-height:4px;cursor:pointer;position:relative;transition:.15s}
+.c-bar:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#333;color:#fff;font-size:.67rem;padding:3px 7px;border-radius:5px;white-space:nowrap;z-index:10;pointer-events:none}
+.c-bar.up{background:#0f9d58}
+.c-bar.down{background:#d93025}
+.c-bar.slow{background:#f4b400}
+.c-bar.empty{background:#e8eaed}
+.chart-xlabels{display:flex;justify-content:space-between;font-size:.63rem;color:var(--muted);margin-top:3px;padding:0 2px}
+
+/* PROBLEM TYPE + ISP (Downdetector differentiator) */
+.report-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.report-card h3{font-size:.88rem;font-weight:700;margin-bottom:12px}
+.problem-types{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.prob-btn{padding:7px 14px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:100px;font-size:.8rem;cursor:pointer;transition:.15s}
+.prob-btn:hover,.prob-btn.selected{background:#fce8e6;border-color:var(--danger);color:var(--danger);font-weight:600}
+.isp-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.isp-btn{padding:6px 12px;background:#f8f9fa;border:1.5px solid var(--border);border-radius:100px;font-size:.78rem;cursor:pointer;transition:.15s}
+.isp-btn:hover,.isp-btn.selected{background:#e8f0fe;border-color:var(--primary);color:var(--primary);font-weight:600}
+#mainReportBtn{width:100%;padding:11px;background:#fff;border:2px solid var(--danger);color:var(--danger);border-radius:var(--radius);font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s}
+#mainReportBtn:hover:not(:disabled){background:#fce8e6}
+#mainReportBtn:disabled{border-color:#ddd;color:#aaa;cursor:not-allowed}
+#mainReportBtn.voted{background:#fce8e6}
+.bar-wrap{margin-top:10px}
+.bar-meta{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:3px}
+.bar-bg{background:#f1f3f4;border-radius:100px;height:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:100px;background:var(--danger);transition:width .5s}
+.crowd-alert{margin-top:9px;padding:8px 12px;background:#ede9fe;border-radius:8px;font-size:.8rem;color:var(--purple);font-weight:600;display:none}
+.vote-pill{display:inline-block;background:#f1f3f4;border-radius:100px;padding:3px 11px;font-size:.76rem;color:var(--muted);margin-bottom:10px}
+.vote-pill strong{color:var(--danger)}
+
+/* RATING */
+.rating-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 0;border-bottom:1px solid var(--border);border-top:1px solid var(--border)}
+.stars{display:flex;gap:3px}
+.star{font-size:1.3rem;cursor:pointer;color:#ddd;transition:.1s;line-height:1}
+.star.filled{color:#f4b400}
+.rating-text{font-size:.78rem;color:var(--muted)}
+
+/* COMMENTS */
+.comment-form{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.comment-row{display:flex;gap:8px}
+.comment-form input,.comment-form textarea{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;outline:none;font-family:inherit;transition:.2s;width:100%}
+.comment-form input:focus,.comment-form textarea:focus{border-color:var(--primary)}
+.comment-form textarea{resize:none;height:56px}
+#submitComment{padding:9px 16px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer}
+.comment-item{padding:9px 0;border-bottom:1px solid var(--border)}
+.comment-item:last-child{border-bottom:none}
+.comment-meta{font-size:.7rem;color:var(--muted);margin-bottom:3px}
+.comment-meta strong{color:var(--text)}
+.comment-badge{display:inline-block;background:#fce8e6;color:var(--danger);font-size:.65rem;padding:1px 6px;border-radius:100px;margin-left:5px;font-weight:600}
+.comment-text{font-size:.82rem;color:var(--text);line-height:1.5}
+.no-comments{font-size:.8rem;color:var(--muted);text-align:center;padding:10px 0}
+
+/* TROUBLESHOOT */
+.trouble-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.trouble-card h3{font-size:.88rem;font-weight:700;margin-bottom:12px}
+.trouble-item{margin-bottom:10px;padding-left:16px;border-left:2px solid var(--border)}
+.trouble-item h4{font-size:.8rem;font-weight:600;margin-bottom:3px}
+.trouble-item p{font-size:.77rem;color:var(--muted);line-height:1.5}
+.trouble-item code{background:#f1f3f4;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:.74rem}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:14px}
+.sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:15px}
+.sidebar-card h3{font-size:.86rem;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.feed-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:.79rem;cursor:pointer}
+.feed-item:last-child{border-bottom:none}
+.feed-item:hover .feed-name{color:var(--primary)}
+.feed-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.feed-dot.up{background:var(--success)}
+.feed-dot.down{background:var(--danger)}
+.feed-info{flex:1;min-width:0}
+.feed-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-time{font-size:.67rem;color:var(--muted)}
+
+/* HOW / FAQ */
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:11px}
+.step{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px}
+.step-num{width:28px;height:28px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;margin-bottom:10px}
+.step h3{font-size:.87rem;font-weight:600;margin-bottom:4px}
+.step p{font-size:.78rem;color:var(--muted);line-height:1.45}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.faq-q{padding:12px 16px;font-weight:600;font-size:.87rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-q:hover{background:#f8f9fa}
+.faq-sym{flex-shrink:0;color:var(--muted)}
+.faq-a{padding:0 16px;font-size:.82rem;color:var(--muted);line-height:1.6;max-height:0;overflow:hidden;transition:.3s}
+.faq-a.open{max-height:300px;padding:0 16px 13px}
+
+footer{background:#fff;border-top:1px solid var(--border);text-align:center;padding:18px;font-size:.76rem;color:var(--muted);margin-top:24px}
+footer a{color:var(--muted);text-decoration:none;margin:0 8px}
+
+@media(max-width:520px){
+  header h1{font-size:1.5rem}
+  .input-row{flex-direction:column}
+  #checkBtn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo" onclick="goHome()">IsItDown<span>India</span></span>
+  <div>
+    <a href="about.html">About</a>
+    <a href="privacy-policy.html">Privacy</a>
+  </div>
+</nav>
+
+<!-- TOP AD -->
+<div class="ad-wrap"><div class="ad-banner">
+  <span class="ad-label">Advertisement</span>
+  <div class="ad-slot" style="height:90px"><!-- AdSense 728×90 --></div>
+</div></div>
+
+<!-- ══════════════ HOME VIEW ══════════════ -->
+<div id="homeView">
+  <header>
+    <h1>Is the Website <span>Down in India?</span></h1>
+    <p>Real-time checks + crowdsourced user reports — built specifically for Indian internet users.</p>
+  </header>
+
+  <div class="search-center">
+    <div class="input-row">
+      <input id="urlInput" type="url" placeholder="Enter site — e.g. swiggy.com or just 'youtube'" autocomplete="off"/>
+      <button id="checkBtn" onclick="handleCheck()">Check Now</button>
+    </div>
+    <p class="hint">💡 Try: youtube · irctc · swiggy · instagram · phonepe — or paste any URL</p>
+
+    <!-- QUICK TAGS -->
+    <div class="quick-tags" id="quickTags"></div>
+  </div>
+
+  <!-- LIVE TICKER -->
+  <div class="ticker-wrap"><div class="ticker-inner" id="ticker"></div></div>
+
+  <!-- POPULAR SITES GRID -->
+  <div class="section">
+    <h2>🔍 Quick Check — Popular Indian Sites & Apps</h2>
+    <div class="sites-grid" id="sitesGrid"></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <h2>⚡ How It Works</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Direct Browser Ping</h3><p>Your browser sends a real HTTP request using your actual browser identity — bypasses bot detection on most sites.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Crowdsourced Reports</h3><p>Indian users report app-level problems in real time — payment failures, login issues, app crashes — that a basic ping can't detect.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Hybrid Verdict</h3><p>We combine the technical ping with user reports. A site can be technically UP but have broken features — we flag both separately.</p></div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <h2>❓ Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-q" onclick="faq(this)">Why does a website show UP but the app isn't working? <span class="faq-sym">+</span></div>
+      <div class="faq-a">Apps and websites run on different infrastructure. A service's homepage may be fine while their payment servers, login APIs, or delivery systems are failing. Our crowdsource report button is designed to catch exactly this kind of issue.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="faq(this)">Why is a site working for others but not for me in India? <span class="faq-sym">+</span></div>
+      <div class="faq-a">Some sites are blocked by Indian ISPs (Jio, Airtel, BSNL, Vi) or by government order. Sometimes only specific regions or networks are affected — testing from your own browser matters more than a server-side check.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="faq(this)">How is this different from global down checkers? <span class="faq-sym">+</span></div>
+      <div class="faq-a">Global tools ping from servers in the US or Europe. We check directly from your browser in India, and combine that with real user reports from Indian users — giving you results that reflect your actual network experience.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="faq(this)">What does the 24-hour outage chart show? <span class="faq-sym">+</span></div>
+      <div class="faq-a">The chart shows the last 24 checks for that site — green bars mean UP, red bars mean DOWN, yellow means slow. Hover a bar to see the exact response time and timestamp. This helps you identify recurring outage patterns.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="faq(this)">Is this tool free? <span class="faq-sym">+</span></div>
+      <div class="faq-a">Yes — completely free. No login, no account, no personal information needed.</div>
+    </div>
+  </div>
+
+  <div class="ad-wrap" style="max-width:980px;margin:8px auto 0">
+    <div class="ad-banner"><span class="ad-label">Advertisement</span>
+      <div class="ad-slot" style="height:90px"><!-- AdSense 728×90 --></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ RESULT VIEW ══════════════ -->
+<div id="resultView">
+  <div class="result-layout">
+    <!-- LEFT -->
+    <div>
+      <div class="back-btn" onclick="goHome()">← Back to Home</div>
+
+      <!-- STATUS CARD -->
+      <div class="result-card">
+        <div class="result-top">
+          <div>
+            <span id="statusBadge" class="status-badge"></span>
+            <div id="resultUrl" class="result-url"></div>
+          </div>
+          <div id="pingBadge" class="ping-badge"></div>
+        </div>
+        <div class="result-stats">
+          <div class="stat"><span class="stat-label">Response</span><span class="stat-value" id="respTime">—</span></div>
+          <div class="stat"><span class="stat-label">HTTP</span><span class="stat-value" id="statusCode">—</span></div>
+          <div class="stat"><span class="stat-label">Last Down</span><span class="stat-value" id="lastDown">—</span></div>
+          <div class="stat"><span class="stat-label">Checked</span><span class="stat-value" id="checkedAt">—</span></div>
+          <div class="stat"><span class="stat-label">Reports</span><span class="stat-value" id="voteDisplay">0</span></div>
+        </div>
+        <div id="resultNote" class="result-note"></div>
+
+        <!-- 24H OUTAGE CHART -->
+        <div class="chart-section">
+          <div class="chart-label">📊 Outage History — Last 24 Checks</div>
+          <div class="chart-bars" id="chartBars"></div>
+          <div class="chart-xlabels"><span>Oldest</span><span>6 checks ago</span><span>Latest</span></div>
+        </div>
+
+        <!-- STAR RATING -->
+        <div class="rating-row">
+          <div class="stars" id="starRow"></div>
+          <div class="rating-text" id="ratingText">Rate this site's reliability in India</div>
+        </div>
+      </div>
+
+      <!-- REPORT CARD (Downdetector-style with problem type + ISP) -->
+      <div class="report-card">
+        <h3>🙋 Report a Problem</h3>
+        <span class="vote-pill">Last 10 min: <strong id="voteCount">0</strong> Indian user reports</span>
+
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:8px">What type of problem are you having?</div>
+        <div class="problem-types" id="probTypes">
+          <span class="prob-btn" onclick="selectProb(this)">🌐 Website down</span>
+          <span class="prob-btn" onclick="selectProb(this)">📱 App not working</span>
+          <span class="prob-btn" onclick="selectProb(this)">💳 Payment failing</span>
+          <span class="prob-btn" onclick="selectProb(this)">🔐 Login issue</span>
+          <span class="prob-btn" onclick="selectProb(this)">🐢 Very slow</span>
+          <span class="prob-btn" onclick="selectProb(this)">📵 Blocked by ISP</span>
+        </div>
+
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:8px">Your ISP / Network:</div>
+        <div class="isp-row">
+          <span class="isp-btn" onclick="selectIsp(this)">Jio</span>
+          <span class="isp-btn" onclick="selectIsp(this)">Airtel</span>
+          <span class="isp-btn" onclick="selectIsp(this)">BSNL</span>
+          <span class="isp-btn" onclick="selectIsp(this)">Vi</span>
+          <span class="isp-btn" onclick="selectIsp(this)">ACT</span>
+          <span class="isp-btn" onclick="selectIsp(this)">Hathway</span>
+          <span class="isp-btn" onclick="selectIsp(this)">Other</span>
+        </div>
+
+        <button id="mainReportBtn" onclick="reportProblem()">⚠️ I'm Having a Problem With This Site</button>
+        <div class="bar-wrap">
+          <div class="bar-meta"><span>Problem reports</span><span id="barLabel">0 / 30 to trigger alert</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="crowdBar" style="width:0%"></div></div>
+        </div>
+        <div class="crowd-alert" id="crowdAlert">🚨 High reports detected — backend/app issues likely even if technical ping shows UP.</div>
+      </div>
+
+      <!-- COMMENTS -->
+      <div class="result-card">
+        <div style="font-size:.88rem;font-weight:700;margin-bottom:12px">💬 User Comments</div>
+        <div class="comment-form">
+          <div class="comment-row">
+            <input id="cmtName" placeholder="Your name" maxlength="30"/>
+            <input id="cmtCity" placeholder="City (e.g. Mumbai)" maxlength="30"/>
+          </div>
+          <div class="comment-row">
+            <textarea id="cmtText" placeholder="Describe the issue — e.g. 'App crashing at checkout on Jio 5G since 2 PM'"></textarea>
+            <button id="submitComment" onclick="submitComment()">Post</button>
+          </div>
+        </div>
+        <div id="commentsList"></div>
+      </div>
+
+      <!-- TROUBLESHOOT -->
+      <div class="trouble-card">
+        <h3>🛠 Can't Access This Site? Try These Fixes</h3>
+        <div class="trouble-item">
+          <h4>1. Force Refresh</h4>
+          <p>Press <code>Ctrl+Shift+R</code> (Windows) or <code>Cmd+Shift+R</code> (Mac) to reload without browser cache.</p>
+        </div>
+        <div class="trouble-item">
+          <h4>2. Flush DNS Cache</h4>
+          <p>Windows: Press <code>Win+R</code> → type <code>cmd</code> → run <code>ipconfig /flushdns</code>. Clears stale Jio/Airtel/BSNL DNS entries.</p>
+        </div>
+        <div class="trouble-item">
+          <h4>3. Switch to Google or Cloudflare DNS</h4>
+          <p>In your WiFi settings, set DNS to <code>8.8.8.8</code> (Google) or <code>1.1.1.1</code> (Cloudflare). Your ISP's DNS may be blocking or slow.</p>
+        </div>
+        <div class="trouble-item">
+          <h4>4. Switch Between WiFi and Mobile Data</h4>
+          <p>If it works on Airtel data but not Jio WiFi (or vice versa), the issue is ISP-specific — not the site itself.</p>
+        </div>
+        <div class="trouble-item">
+          <h4>5. Clear Browser Cache & Cookies</h4>
+          <p>Chrome: <code>Settings → Privacy → Clear browsing data</code> → select Cookies + Cached images.</p>
+        </div>
+        <div class="trouble-item" id="troubleAlt"></div>
+      </div>
+
+      <div id="resultAd" style="margin-bottom:12px">
+        <div class="ad-banner"><span class="ad-label">Advertisement</span>
+          <div class="ad-slot" style="height:250px"><!-- AdSense 336×280 --></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <h3>🔴 Currently Down in India</h3>
+        <div id="downFeed"><div class="no-comments">No outages detected yet</div></div>
+      </div>
+      <div class="sidebar-card">
+        <h3>🕐 Recently Checked</h3>
+        <div id="recentFeed"><div class="no-comments">No checks yet</div></div>
+      </div>
+      <div class="ad-banner">
+        <span class="ad-label">Advertisement</span>
+        <div class="ad-slot" style="height:250px"><!-- AdSense 300×250 --></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 IsItDownIndia.in &nbsp;|&nbsp;
+    <a href="about.html">About</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="mailto:hello@isitdownindia.in">Contact</a>
+  </p>
+  <p style="margin-top:6px;color:#aaa">Results combine browser ping + crowdsourced Indian user reports. Results may vary by ISP and region.</p>
+</footer>
+
+<script>
+/* ── CONFIG ─────────────────────────── */
+const WORKER_URL     = '';
+const SUPABASE_URL   = '';
+const SUPABASE_KEY   = '';
+const VOTE_THRESHOLD = 30;
+const CACHE_TTL      = 60000;
+const MAX_HISTORY    = 24;
+const USE_WORKER = !!WORKER_URL;
+const USE_SUPA   = !!(SUPABASE_URL && SUPABASE_KEY);
+const pingCache  = {};
+
+/* ── DATA ────────────────────────────── */
+const SITES = [
+  {name:'YouTube',   url:'https://www.youtube.com'},
+  {name:'Instagram', url:'https://www.instagram.com'},
+  {name:'WhatsApp',  url:'https://www.whatsapp.com'},
+  {name:'Telegram',  url:'https://www.telegram.org'},
+  {name:'Swiggy',    url:'https://www.swiggy.com'},
+  {name:'Zomato',    url:'https://www.zomato.com'},
+  {name:'IRCTC',     url:'https://www.irctc.co.in'},
+  {name:'Netflix',   url:'https://www.netflix.com'},
+  {name:'Hotstar',   url:'https://www.hotstar.com'},
+  {name:'PhonePe',   url:'https://www.phonepe.com'},
+  {name:'Paytm',     url:'https://www.paytm.com'},
+  {name:'Flipkart',  url:'https://www.flipkart.com'},
+  {name:'Amazon IN', url:'https://www.amazon.in'},
+  {name:'X/Twitter', url:'https://www.twitter.com'},
+  {name:'Jio',       url:'https://www.jio.com'},
+  {name:'Airtel',    url:'https://www.airtel.in'},
+];
+
+const SHORTCUTS = {
+  youtube:'https://www.youtube.com',yt:'https://www.youtube.com',
+  instagram:'https://www.instagram.com',insta:'https://www.instagram.com',
+  whatsapp:'https://www.whatsapp.com',wa:'https://www.whatsapp.com',
+  telegram:'https://www.telegram.org',tg:'https://www.telegram.org',
+  swiggy:'https://www.swiggy.com',zomato:'https://www.zomato.com',
+  irctc:'https://www.irctc.co.in',netflix:'https://www.netflix.com',
+  hotstar:'https://www.hotstar.com',phonepe:'https://www.phonepe.com',
+  paytm:'https://www.paytm.com',twitter:'https://www.twitter.com',
+  x:'https://www.twitter.com',facebook:'https://www.facebook.com',
+  fb:'https://www.facebook.com',google:'https://www.google.com',
+  amazon:'https://www.amazon.in',flipkart:'https://www.flipkart.com',
+  jio:'https://www.jio.com',airtel:'https://www.airtel.in',
+};
+
+const ALT_URLS = {
+  'youtube.com':'Try: m.youtube.com or youtu.be',
+  'instagram.com':'Try the Instagram app or m.instagram.com',
+  'irctc.co.in':'Try: m.irctc.co.in (mobile site) or the IRCTC Rail Connect app',
+  'whatsapp.com':'WhatsApp Web may be blocked — try the WhatsApp app directly',
+  'paytm.com':'Try the Paytm app directly — the web version may be restricted',
+};
+
+/* ── STATE ─────────────────────────── */
+let currentDomain='', hasVoted=false, selectedProb='', selectedIsp='';
+let recentChecks = JSON.parse(localStorage.getItem('recentChecks')||'[]');
+
+/* ── INIT ──────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildSiteCards();
+  buildQuickTags();
+  buildStars();
+  buildTicker();
+  renderRecentFeed();
+  renderDownFeed();
+  document.getElementById('urlInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter') handleCheck();
+  });
+  // Handle browser back button — go to home state instead of leaving site
+  window.addEventListener('popstate', e=>{
+    if(e.state && e.state.page==='home') showHome();
+    else if(e.state && e.state.page==='result') { /* stay */ }
+  });
+  history.replaceState({page:'home'},'','');
+});
+
+/* ── VIEWS ─────────────────────────── */
+function showHome(){
+  document.getElementById('homeView').style.display='block';
+  document.getElementById('resultView').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showResult(){
+  document.getElementById('homeView').style.display='none';
+  document.getElementById('resultView').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.pushState({page:'result'},'','');
+}
+function goHome(){
+  showHome();
+  history.pushState({page:'home'},'','');
+}
+
+/* ── QUICK TAGS ─────────────────────── */
+function buildQuickTags(){
+  const wrap = document.getElementById('quickTags');
+  const tags = ['YouTube','Instagram','IRCTC','Swiggy','WhatsApp','Netflix','Paytm'];
+  tags.forEach(name=>{
+    const s = SITES.find(x=>x.name===name);
+    if(!s) return;
+    const dom = getDomain(s.url);
+    const btn = document.createElement('div');
+    btn.className='tag';
+    btn.innerHTML=`<img src="https://www.google.com/s2/favicons?domain=${dom}&sz=32" onerror="this.style.display='none'">${name}`;
+    btn.onclick=()=>handleCheck(s.url);
+    wrap.appendChild(btn);
+  });
+}
+
+/* ── TICKER ─────────────────────────── */
+function buildTicker(){
+  const inner = document.getElementById('ticker');
+  const items = [...SITES,...SITES]; // duplicate for infinite loop
+  inner.innerHTML = items.map(s=>{
+    const hist = getHistory(getDomain(s.url));
+    const last = hist[hist.length-1];
+    const cls  = last ? (last.ok?'up':'down') : 'unknown';
+    const txt  = last ? (last.ok?'UP':'DOWN') : 'Not checked';
+    return `<div class="ticker-item"><span class="t-dot ${cls}"></span>${s.name}: <strong>${txt}</strong></div>`;
+  }).join('');
+}
+
+/* ── SITE CARDS ─────────────────────── */
+function buildSiteCards(){
+  const grid=document.getElementById('sitesGrid');
+  SITES.forEach(s=>{
+    const dom=getDomain(s.url);
+    const hist=getHistory(dom);
+    const last=hist[hist.length-1];
+    const dotCls=last?(last.ok?'up':'down'):'';
+    const lastTxt=last?timeAgo(last.ts):'Not checked';
+    const card=document.createElement('div');
+    card.className='site-card';
+    card.innerHTML=`
+      <img src="https://www.google.com/s2/favicons?domain=${dom}&sz=64"
+           class="site-icon-img" alt="${s.name}" onerror="this.style.display='none'">
+      <div class="site-info">
+        <span class="site-name">${s.name}</span>
+        <span class="site-last" id="last_${domKey(dom)}">${lastTxt}</span>
+      </div>
+      <span class="site-dot ${dotCls}" id="dot_${domKey(dom)}"></span>`;
+    card.onclick=()=>handleCheck(s.url);
+    grid.appendChild(card);
+  });
+}
+
+/* ── NORMALIZE ─────────────────────── */
+function normalize(raw){
+  raw=raw.trim();
+  const lo=raw.toLowerCase();
+  if(SHORTCUTS[lo]) return SHORTCUTS[lo];
+  if(!raw.includes('.')) raw=raw+'.com';
+  if(!raw.startsWith('http')) raw='https://'+raw;
+  return raw;
+}
+function getDomain(url){
+  try{return new URL(url).hostname.replace('www.','');}
+  catch{return url.replace(/https?:\/\//,'').replace('www.','').split('/')[0];}
+}
+function domKey(d){return d.replace(/[\.\-]/g,'_');}
+
+/* ── MAIN CHECK ─────────────────────── */
+async function handleCheck(preUrl){
+  const input=document.getElementById('urlInput');
+  const btn=document.getElementById('checkBtn');
+  let url=preUrl?preUrl:normalize(input.value);
+  if(!url){input.focus();return;}
+  input.value=url;
+  currentDomain=getDomain(url);
+  hasVoted=localStorage.getItem('voted_'+currentDomain)==='1';
+  selectedProb=''; selectedIsp='';
+
+  btn.disabled=true; btn.textContent='Checking…';
+
+  const[ping,votes]=await Promise.all([doPing(url),getVotes(currentDomain)]);
+  saveHistory(currentDomain,ping);
+  saveRecent(currentDomain,url,ping);
+
+  renderResult(url,ping,votes);
+  renderChart(currentDomain);
+  renderRecentFeed();
+  renderDownFeed();
+  updateSiteCard(currentDomain,ping);
+  renderComments(currentDomain);
+  buildTicker();
+  showResult();
+
+  btn.disabled=false; btn.textContent='Check Now';
+}
+
+/* ── PING ──────────────────────────── */
+async function doPing(url){
+  const dom=getDomain(url);
+  const cached=pingCache[dom];
+  if(cached&&Date.now()-cached.ts<CACHE_TTL) return{...cached.result,fromCache:true};
+  const result=USE_WORKER?await workerPing(url):await browserPing(url);
+  pingCache[dom]={result,ts:Date.now()};
+  return result;
+}
+async function workerPing(url){
+  const start=Date.now();
+  try{
+    const res=await fetch(`${WORKER_URL}?url=${encodeURIComponent(url)}`,{signal:AbortSignal.timeout(12000)});
+    const d=await res.json();
+    return{ok:d.ok,elapsed:d.elapsed??(Date.now()-start),status:d.status,method:'Cloudflare Worker'};
+  }catch{return{ok:false,elapsed:Date.now()-start,status:'error',method:'Cloudflare Worker'};}
+}
+async function browserPing(url){
+  const start=Date.now();
+  const dom=getDomain(url);
+  const isProtected=HEAVILY_PROTECTED.some(d=>dom.includes(d));
+
+  if(isProtected){
+    // For heavily protected sites, try multiple endpoints simultaneously
+    // If ANY succeeds → UP. Only if ALL fail → DOWN
+    const results = await Promise.allSettled([
+      imagePing(dom, start, 8000),
+      googleFaviconPing(dom, start),
+      noCorsFetch(url, start)
+    ]);
+    const anyOk = results.some(r=>r.status==='fulfilled' && r.value && r.value.ok);
+    const elapsed = Date.now()-start;
+    if(anyOk) return{ok:true,elapsed,status:'2xx',method:'Multi-method ping'};
+    // Even if all fail for protected sites, check if it's truly down
+    // by seeing if at least one got a response (even error)
+    const anyResponse = results.some(r=>r.status==='fulfilled' && r.value!==null);
+    if(anyResponse) return{ok:true,elapsed,status:'Protected',method:'Multi-method ping'};
+    return{ok:false,elapsed,status:'unreachable',method:'Multi-method ping'};
+  }
+
+  // Normal sites: image ping first, then no-cors fetch
+  const img_result=await imagePing(dom,start,5000);
+  if(img_result!==null) return img_result;
+  return noCorsFetch(url,start);
+}
+
+async function noCorsFetch(url,start){
+  try{
+    await fetch(url,{mode:'no-cors',cache:'no-store',redirect:'follow',signal:AbortSignal.timeout(6000)});
+    return{ok:true,elapsed:Date.now()-start,status:200,method:'Browser direct'};
+  }catch(e){
+    return{ok:false,elapsed:Date.now()-start,
+      status:e.name==='AbortError'||e.name==='TimeoutError'?'timeout':'unreachable',
+      method:'Browser direct'};
+  }
+}
+
+// Ping site's own favicon — onerror still means server replied = UP
+function imagePing(domain,start,timeout=5000){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const timer=setTimeout(()=>{img.src='';resolve(null);},timeout);
+    img.onload=()=>{clearTimeout(timer);resolve({ok:true,elapsed:Date.now()-start,status:200,method:'Image ping'});};
+    img.onerror=()=>{clearTimeout(timer);resolve({ok:true,elapsed:Date.now()-start,status:'2xx/4xx',method:'Image ping'});};
+    img.src=`https://${domain}/favicon.ico?_=${Date.now()}`;
+  });
+}
+
+// Google favicon service as secondary check — if Google can fetch it, it's up
+function googleFaviconPing(domain,start){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const timer=setTimeout(()=>{img.src='';resolve(null);},6000);
+    img.onload=()=>{clearTimeout(timer);resolve({ok:true,elapsed:Date.now()-start,status:200,method:'Google favicon'});};
+    img.onerror=()=>{clearTimeout(timer);resolve(null);};
+    img.src=`https://www.google.com/s2/favicons?domain=${domain}&sz=32&_=${Date.now()}`;
+  });
+}
+
+/* ── RENDER RESULT ─────────────────── */
+function renderResult(url,ping,votes){
+  const{ok,elapsed,status,method,fromCache}=ping;
+  let state=votes>=VOTE_THRESHOLD?'reported':!ok?'down':elapsed>5000?'slow':'up';
+  const cfgs={
+    up:  {label:'✅ UP',cls:'status-up',
+          note:'✅ <strong>Reachable from India.</strong> If you still can\'t access it, the issue is likely with your ISP or local network — see troubleshooting tips below.'},
+    down:{label:'❌ DOWN',cls:'status-down',
+          note:'❌ <strong>Unreachable from India.</strong> The site may be blocked by your ISP, temporarily offline, or facing an outage. Try the troubleshooting tips below.'},
+    slow:{label:'⚠️ SLOW',cls:'status-slow',
+          note:`⚠️ <strong>Site is up but responding slowly</strong> (${elapsed}ms). This could be high traffic or a server issue. Try again in a few minutes.`},
+    reported:{label:'🚨 REPORTED ISSUES',cls:'status-reported',
+          note:`🚨 <strong>Technical ping says UP, but ${votes} users reported problems</strong> in the last 10 minutes. The app, payment system, or backend APIs may be failing even though the homepage loads.`},
+  };
+  const cfg=cfgs[state];
+  document.getElementById('statusBadge').textContent=cfg.label;
+  document.getElementById('statusBadge').className='status-badge '+cfg.cls;
+  document.getElementById('resultUrl').textContent=url;
+  document.getElementById('respTime').textContent=elapsed+'ms'+(fromCache?' ⚡':'');
+  document.getElementById('statusCode').textContent=status;
+  document.getElementById('checkedAt').textContent=new Date().toLocaleTimeString('en-IN');
+  document.getElementById('resultNote').innerHTML=cfg.note;
+  document.getElementById('pingBadge').innerHTML=`📡 ${method}<br>${fromCache?'⚡ Cached':'🔄 Fresh'}`;
+
+  const hist=getHistory(currentDomain);
+  const lastDown=hist.filter(h=>!h.ok).sort((a,b)=>b.ts-a.ts)[0];
+  document.getElementById('lastDown').textContent=lastDown?timeAgo(lastDown.ts):'Never';
+
+  const altEl=document.getElementById('troubleAlt');
+  const altMsg=ALT_URLS[currentDomain];
+  altEl.innerHTML=altMsg?`<h4>6. Try Alternative URLs</h4><p>${altMsg}</p>`:'';
+
+  document.getElementById('mainReportBtn').disabled=hasVoted;
+  document.getElementById('mainReportBtn').textContent=hasVoted?'✅ You Already Reported This':'⚠️ I\'m Having a Problem With This Site';
+  if(hasVoted) document.getElementById('mainReportBtn').classList.add('voted');
+  document.querySelectorAll('.prob-btn,.isp-btn').forEach(b=>b.classList.remove('selected'));
+
+  updateVoteUI(votes);
+  resetStars(currentDomain);
+}
+
+/* ── CHART ──────────────────────────── */
+function renderChart(domain){
+  const bars=document.getElementById('chartBars');
+  bars.innerHTML='';
+  const h=getHistory(domain);
+  if(!h.length){bars.innerHTML='<span style="font-size:.72rem;color:#aaa;margin:auto">Check this site to start building history</span>';return;}
+  const maxMs=Math.max(...h.filter(x=>x.ok).map(x=>x.elapsed),500);
+  h.forEach(item=>{
+    const pct=item.ok?Math.max((item.elapsed/maxMs)*100,8):100;
+    const cls=!item.ok?'down':item.elapsed>4000?'slow':'up';
+    const tip=item.ok?`${item.elapsed}ms · ${new Date(item.ts).toLocaleTimeString('en-IN')}`:`DOWN · ${new Date(item.ts).toLocaleTimeString('en-IN')}`;
+    const bar=document.createElement('div');
+    bar.className=`c-bar ${cls}`;
+    bar.style.height=pct+'%';
+    bar.setAttribute('data-tip',tip);
+    bars.appendChild(bar);
+  });
+}
+
+/* ── PROBLEM TYPE + ISP ─────────────── */
+function selectProb(el){
+  document.querySelectorAll('.prob-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedProb=el.textContent.trim();
+}
+function selectIsp(el){
+  document.querySelectorAll('.isp-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedIsp=el.textContent.trim();
+}
+
+/* ── VOTES ──────────────────────────── */
+async function getVotes(domain){
+  if(!USE_SUPA) return parseInt(localStorage.getItem('votes_'+domain)||'0');
+  try{
+    const since=new Date(Date.now()-10*60*1000).toISOString();
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/site_reports?site_domain=eq.${domain}&reported_at=gte.${since}&select=id`,
+      {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Prefer:'count=exact'}});
+    return parseInt(res.headers.get('content-range')?.split('/')[1]||'0');
+  }catch{return 0;}
+}
+async function reportProblem(){
+  if(hasVoted||!currentDomain) return;
+  const btn=document.getElementById('mainReportBtn');
+  btn.disabled=true; btn.textContent='Submitting…';
+  const entry={site_domain:currentDomain,problem:selectedProb,isp:selectedIsp};
+  if(!USE_SUPA){
+    const k='votes_'+currentDomain;
+    localStorage.setItem(k,(parseInt(localStorage.getItem(k)||'0')+1).toString());
+    localStorage.setItem('voted_'+currentDomain,'1');
+  }else{
+    try{
+      await fetch(`${SUPABASE_URL}/rest/v1/site_reports`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`},
+        body:JSON.stringify(entry)
+      });
+      localStorage.setItem('voted_'+currentDomain,'1');
+    }catch{btn.disabled=false;btn.textContent='⚠️ I\'m Having a Problem With This Site';return;}
+  }
+  hasVoted=true;
+  btn.textContent='✅ Thanks for Reporting!';
+  btn.classList.add('voted');
+  const nv=await getVotes(currentDomain);
+  updateVoteUI(nv);
+}
+function updateVoteUI(v){
+  document.getElementById('voteCount').textContent=v;
+  document.getElementById('voteDisplay').textContent=v;
+  const pct=Math.min((v/VOTE_THRESHOLD)*100,100);
+  document.getElementById('crowdBar').style.width=pct+'%';
+  document.getElementById('barLabel').textContent=`${v} / ${VOTE_THRESHOLD} to trigger alert`;
+  document.getElementById('crowdAlert').style.display=v>=VOTE_THRESHOLD?'block':'none';
+}
+
+/* ── HISTORY ─────────────────────────── */
+function getHistory(domain){return JSON.parse(localStorage.getItem('hist_'+domain)||'[]');}
+function saveHistory(domain,ping){
+  let h=getHistory(domain);
+  h.push({ok:ping.ok,elapsed:ping.elapsed,ts:Date.now()});
+  if(h.length>MAX_HISTORY) h=h.slice(-MAX_HISTORY);
+  localStorage.setItem('hist_'+domain,JSON.stringify(h));
+}
+
+/* ── FEEDS ──────────────────────────── */
+function saveRecent(domain,url,ping){
+  recentChecks=recentChecks.filter(r=>r.domain!==domain);
+  recentChecks.unshift({domain,url,ok:ping.ok,ts:Date.now()});
+  if(recentChecks.length>10) recentChecks=recentChecks.slice(0,10);
+  localStorage.setItem('recentChecks',JSON.stringify(recentChecks));
+}
+function renderRecentFeed(){
+  const el=document.getElementById('recentFeed');
+  if(!recentChecks.length){el.innerHTML='<div class="no-comments">No checks yet</div>';return;}
+  el.innerHTML=recentChecks.map(r=>`
+    <div class="feed-item" onclick="handleCheck('${r.url}')">
+      <span class="feed-dot ${r.ok?'up':'down'}"></span>
+      <div class="feed-info">
+        <div class="feed-name">${r.domain}</div>
+        <div class="feed-time">${timeAgo(r.ts)}</div>
+      </div>
+    </div>`).join('');
+}
+function renderDownFeed(){
+  const el=document.getElementById('downFeed');
+  const downs=recentChecks.filter(r=>!r.ok);
+  if(!downs.length){el.innerHTML='<div class="no-comments">No outages detected yet</div>';return;}
+  el.innerHTML=downs.map(r=>`
+    <div class="feed-item" onclick="handleCheck('${r.url}')">
+      <span class="feed-dot down"></span>
+      <div class="feed-info">
+        <div class="feed-name">${r.domain}</div>
+        <div class="feed-time">Down · ${timeAgo(r.ts)}</div>
+      </div>
+    </div>`).join('');
+}
+function updateSiteCard(domain,ping){
+  const dot=document.getElementById('dot_'+domKey(domain));
+  if(dot) dot.className='site-dot '+(ping.ok?'up':'down');
+  const lastEl=document.getElementById('last_'+domKey(domain));
+  if(lastEl) lastEl.textContent='Just checked';
+}
+
+/* ── STARS ──────────────────────────── */
+function buildStars(){
+  const row=document.getElementById('starRow');
+  for(let i=1;i<=5;i++){
+    const s=document.createElement('span');
+    s.className='star'; s.textContent='★'; s.dataset.val=i;
+    s.onmouseover=()=>hoverStars(i);
+    s.onmouseout=()=>resetStars(currentDomain);
+    s.onclick=()=>rateSite(i);
+    row.appendChild(s);
+  }
+}
+function hoverStars(n){document.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('filled',i<n));}
+function resetStars(domain){
+  const saved=parseInt(localStorage.getItem('rating_'+domain)||'0');
+  document.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('filled',i<saved));
+  const ratings=JSON.parse(localStorage.getItem('ratings_data')||'{}');
+  const r=ratings[domain];
+  document.getElementById('ratingText').textContent=r
+    ?`Your rating: ${r.mine}/5 ★  avg: ${r.avg}/5 (${r.count} votes)`
+    :'Rate this site\'s reliability in India';
+}
+function rateSite(n){
+  if(!currentDomain) return;
+  localStorage.setItem('rating_'+currentDomain,n);
+  const ratings=JSON.parse(localStorage.getItem('ratings_data')||'{}');
+  const cur=ratings[currentDomain]||{sum:0,count:0};
+  cur.sum+=n; cur.count++; cur.mine=n; cur.avg=(cur.sum/cur.count).toFixed(1);
+  ratings[currentDomain]=cur;
+  localStorage.setItem('ratings_data',JSON.stringify(ratings));
+  resetStars(currentDomain);
+}
+
+/* ── COMMENTS ────────────────────────── */
+function getComments(d){return JSON.parse(localStorage.getItem('comments_'+d)||'[]');}
+function renderComments(domain){
+  const list=document.getElementById('commentsList');
+  const cms=getComments(domain);
+  if(!cms.length){list.innerHTML='<div class="no-comments">No comments yet — be the first!</div>';return;}
+  list.innerHTML=cms.slice().reverse().map(c=>`
+    <div class="comment-item">
+      <div class="comment-meta">
+        <strong>${esc(c.name)}</strong> from ${esc(c.city)} · ${timeAgo(c.ts)}
+        ${c.prob?`<span class="comment-badge">${esc(c.prob)}</span>`:''}
+        ${c.isp?`<span class="comment-badge" style="background:#e8f0fe;color:var(--primary)">${esc(c.isp)}</span>`:''}
+      </div>
+      <div class="comment-text">${esc(c.text)}</div>
+    </div>`).join('');
+}
+function submitComment(){
+  const name=document.getElementById('cmtName').value.trim();
+  const city=document.getElementById('cmtCity').value.trim();
+  const text=document.getElementById('cmtText').value.trim();
+  if(!name||!text||!currentDomain) return;
+  const cms=getComments(currentDomain);
+  cms.push({name,city:city||'India',text,prob:selectedProb,isp:selectedIsp,ts:Date.now()});
+  if(cms.length>20) cms.splice(0,cms.length-20);
+  localStorage.setItem('comments_'+currentDomain,JSON.stringify(cms));
+  ['cmtName','cmtCity','cmtText'].forEach(id=>document.getElementById(id).value='');
+  renderComments(currentDomain);
+}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+/* ── UTILS ───────────────────────────── */
+function timeAgo(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return 'just now';
+  const m=Math.floor(s/60);
+  if(m<60) return m+'m ago';
+  const h=Math.floor(m/60);
+  if(h<24) return h+'h ago';
+  return Math.floor(h/24)+'d ago';
+}
+function faq(el){
+  const a=el.nextElementSibling,s=el.querySelector('.faq-sym');
+  a.classList.toggle('open');
+  s.textContent=a.classList.contains('open')?'−':'+';
+}
+</script>
+</body>
+</html>
